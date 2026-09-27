@@ -221,15 +221,19 @@ class Universe:
             origin = self.position_of(spec.viewpoint)
             delta = target - origin
             norm = np.linalg.norm(delta) or 1.0
-            phi = float(np.degrees(np.arccos(np.clip(delta[2] / norm, -1.0, 1.0))))
+            raw = float(np.degrees(np.arccos(np.clip(delta[2] / norm, -1.0, 1.0))))
+            # Keep the Moon's direction, but do not drop to a pure edge-on line.
+            phi = 0.35 * raw + 0.65 * 52.0
             theta = float(np.degrees(np.arctan2(delta[1], delta[0])))
             center, height = target, spec.height
         else:
             center, height, phi, theta = target, spec.height, spec.phi, spec.theta
         self.scene.frame.reorient(theta, phi, 0, center, height)
         close = height < 8
-        for orbit in self._orbits.values():
-            orbit.set_stroke(opacity=0.05 if close else 0.18)
+        for name, orbit in self._orbits.items():
+            body_opacity = self.bodies[name].style.opacity
+            base = 0.05 if close else 0.18
+            orbit.set_stroke(opacity=base * body_opacity)
 
     def refresh_label(self) -> None:
         if self._label is not None:

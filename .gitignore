@@ -1,0 +1,9 @@
+__pycache__/
+*.py[cod]
+.cache/
+media/
+videos/
+*.mp4
+.venv/
+secrets/
+github_token

@@ -1,0 +1,12 @@
+[project]
+name = "universe-manimgl"
+version = "0.1.0"
+description = "Step 1 of a controllable 3D universe for ManimGL."
+requires-python = ">=3.11"
+dependencies = ["numpy"]
+
+[tool.setuptools.packages.find]
+include = ["universe*"]
+
+[tool.setuptools.package-data]
+universe = ["assets/textures/*"]
